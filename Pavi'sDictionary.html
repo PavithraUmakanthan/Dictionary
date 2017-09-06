@@ -1,0 +1,89 @@
+<form>
+<html>
+	<head>
+		<style>
+			.outline{
+				text-align:center;
+				}
+
+		</style>
+	</head> 
+	<body>
+		<div class="outline">
+			<h1>Pavi's Dictionary</h1>
+
+			<h2> Word:<input id="text1" name="word" type="text" maxlength="100" /> </h2>   
+			<h2>Meaning:<input id="text2" name="Meaning" type="text" /></h2>
+			<h2>Sentence:<input id="text3" name="Sentence" type="text" /></h2>
+			<br/>
+			
+			<input id="submit" type="button" value="submit" onclick="createItem();"/>
+			<br></br>
+			<input id="read" type="button" value="search" onclick="readItem();"/>
+			<br></br>
+			<textarea readonly id= "info" style="width:450px; height:200px"></textarea> 
+		</div>
+
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+
+		<script>
+ 			 AWS.config.update({
+ 				 region: "us-west-2",
+  				 //endpoint: 'http://localhost:8000',
+ 				 accessKeyId: "AKIAINYPV7SSHSEU6PRQ",
+  				 secretAccessKey: "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"
+			});
+
+			var docClient = new AWS.DynamoDB.DocumentClient();
+
+			function createItem() {
+		
+				var word = document.getElementById('text1').value;
+				var meaning = document.getElementById('text2').value;
+				var sentence = document.getElementById('text3').value;
+				//var test = JSON.stringify({word: word, meaning: meaning});
+
+  		  		var params = {
+        				TableName :"NewDictionary",
+        				Item:{
+						"word":word,
+						"meaning":meaning, 
+						"sentence":sentence
+					}
+    				};
+    				docClient.put(params, function(err, data) {
+        				if (err) {
+            				document.getElementById('info').innerHTML = "Item not saved" + "\n" + JSON.stringify(err, undefined, 2);
+        				} else {
+            				document.getElementById('info').innerHTML = "Saved succeesfullly";
+        				}
+    				});
+			}
+
+			function readItem() {
+    				var table = "NewDictionary";
+				var word = document.getElementById('text1').value; 
+    				var params = {
+        			TableName: table,
+        				Key:{
+            					"word": word
+        				}
+    				};
+    				docClient.get(params, function(err, data) {
+        				if (JSON.stringify(data)=='{}') {  					
+            				document.getElementById('info').innerHTML = "Not Found";
+							}
+							else if(err){
+							document.getElementById('info').innerHTML = JSON.stringify(err, undefined, 2);
+        				} else {
+            				document.getElementById('info').innerHTML = "Found" + "\n" + JSON.stringify(data, undefined, 2);    
+        				}
+    				}); 
+			}
+
+
+
+		</script>
+	</body>
+</html>
+</form>
