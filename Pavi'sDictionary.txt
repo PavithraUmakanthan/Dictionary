@@ -7,12 +7,12 @@
 				}
 
 		</style>
-	</head>
+	</head> 
 	<body>
 		<div class="outline">
 			<h1>Pavi's Dictionary</h1>
 
-			<h2> Word:<input id="text1" name="word" type="text" maxlength="100" /> </h2> 
+			<h2> Word:<input id="text1" name="word" type="text" maxlength="100" /> </h2>   
 			<h2>Meaning:<input id="text2" name="Meaning" type="text" /></h2>
 			<h2>Sentence:<input id="text3" name="Sentence" type="text" /></h2>
 			<br/>
@@ -21,7 +21,7 @@
 			<br></br>
 			<input id="read" type="button" value="search" onclick="readItem();"/>
 			<br></br>
-			<textarea readonly id= "info" style="width:250px; height:200px"></textarea>
+			<textarea readonly id= "info" style="width:450px; height:200px"></textarea>
 		</div>
 
 		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
@@ -30,8 +30,8 @@
  			 AWS.config.update({
  				 region: "us-west-2",
   				 //endpoint: 'http://localhost:8000',
- 				 accessKeyId: "AKIAJPCXES7TD6BFC3YQ",
-  				 secretAccessKey: "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"
+ 				 accessKeyId: "AKIAJI6XLVUSXRBJ3XGA",
+  				 secretAccessKey: "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"
 			});
 
 			var docClient = new AWS.DynamoDB.DocumentClient();
@@ -51,11 +51,11 @@
 						"sentence":sentence
 					}
     				};
-    				docClient.put(params, function(error, data) {
-        				if (error) {
-            				document.getElementById('info').innerHTML = "Item not saved: " + "\n" + JSON.stringify(error, undefined, 2);
+    				docClient.put(params, function(err, data) {
+        				if (err) {
+            				document.getElementById('info').innerHTML = "Item not saved" + "\n" + JSON.stringify(err, undefined, 2);
         				} else {
-            				document.getElementById('info').innerHTML = "Saved succeesfullly: " + "\n" + JSON.stringify(data, undefined, 2);
+            				document.getElementById('info').innerHTML = "Saved succeesfullly";
         				}
     				});
 			}
@@ -69,13 +69,16 @@
             					"word": word
         				}
     				};
-    				docClient.get(params, function(error, data) {
-        				if (error) {
-            				document.getElementById('info').innerHTML = "Item not saved: " + "\n" + JSON.stringify(error, undefined, 2);
+    				docClient.get(params, function(err, data) {
+        				if (JSON.stringify(data)=='{}') {  					
+            				document.getElementById('info').innerHTML = "Not Found";
+							}
+							else if(err){
+							document.getElementById('info').innerHTML = JSON.stringify(err, undefined, 2);
         				} else {
-            				document.getElementById('info').innerHTML = "Saved succeesfully: " + "\n" + JSON.stringify(data, undefined, 2);
+            				document.getElementById('info').innerHTML = "Found" + "\n" + JSON.stringify(data, undefined, 2);    
         				}
-    				});
+    				}); 
 			}
 
 
