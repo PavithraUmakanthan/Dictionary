@@ -41,7 +41,6 @@
 				var word = document.getElementById('text1').value;
 				var meaning = document.getElementById('text2').value;
 				var sentence = document.getElementById('text3').value;
-				//var test = JSON.stringify({word: word, meaning: meaning});
 
   		  		var params = {
         				TableName :"NewDictionary",
@@ -53,9 +52,9 @@
     				};
     				docClient.put(params, function(err, data) {
         				if (err) {
-            				document.getElementById('info').innerHTML = "Item not saved" + "\n" + JSON.stringify(err, undefined, 2);
+            					document.getElementById('info').innerHTML = "Item not saved" + "\n" + JSON.stringify(err, undefined, 2);
         				} else {
-            				document.getElementById('info').innerHTML = "Saved succeesfullly";
+            					document.getElementById('info').innerHTML = "Saved succeesfullly";
         				}
     				});
 			}
@@ -71,12 +70,12 @@
     				};
     				docClient.get(params, function(err, data) {
         				if (JSON.stringify(data)=='{}') {  					
-            				document.getElementById('info').innerHTML = "Not Found";
+            					document.getElementById('info').innerHTML = "Not Found";
 							}
-							else if(err){
-							document.getElementById('info').innerHTML = JSON.stringify(err, undefined, 2);
+					else if(err){
+						document.getElementById('info').innerHTML = JSON.stringify(err, undefined, 2);
         				} else {
-            				document.getElementById('info').innerHTML = "Found" + "\n" + JSON.stringify(data, undefined, 2);    
+            				 	document.getElementById('info').innerHTML = "Found" + "\n" + JSON.stringify(data, undefined, 2);    
         				}
     				}); 
 			}
