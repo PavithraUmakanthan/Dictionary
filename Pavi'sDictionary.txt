@@ -30,8 +30,8 @@
  			 AWS.config.update({
  				 region: "us-west-2",
   				 //endpoint: 'http://localhost:8000',
- 				 accessKeyId: "AKIAJI6XLVUSXRBJ3XGA",
-  				 secretAccessKey: "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"
+ 				 accessKeyId: "",
+  				 secretAccessKey: ""
 			});
 
 			var docClient = new AWS.DynamoDB.DocumentClient();
